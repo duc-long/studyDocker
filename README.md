@@ -1,7 +1,8 @@
-# Docker Study — Trang học tập
+# Docker Study - Learning Page
 
-Trang web tĩnh này là một dự án học tập về Docker và các khái niệm liên quan, bao gồm ví dụ tương tác trên trình duyệt.
+This static website is a learning project about Docker and related concepts, including interactive examples in the browser.
 
-## Mục tiêu
-- Lưu trữ các ví dụ, bài tập và công cụ nhỏ để học Docker.
-- Cung cấp giao diện tương tác: trình soạn thảo, quiz, terminal mô phỏng.
+## Objectives
+- To store examples, exercises, and small tools for learning Docker.
+
+- To provide an interactive interface: editor, quiz, simulated terminal.
