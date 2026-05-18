@@ -165,6 +165,9 @@ class VirtualEditor {
             // Add services to virtual docker engine
             if (window.appManager.terminal) {
               const term = window.appManager.terminal;
+              if (!term.containers.some(c => c.name === "app-frontend")) {
+                term.containers.push({ id: "fe3000a0", name: "app-frontend", image: "my-react-app:latest", status: "running", ports: "3000:3000" });
+              }
               if (!term.containers.some(c => c.name === "app-db")) {
                 term.containers.push({ id: "db5432a1", name: "app-db", image: "postgres:15-alpine", status: "running", ports: "5432:5432" });
               }
@@ -173,6 +176,7 @@ class VirtualEditor {
               }
               term.writeLine("Creating network \"app-default\" with the default driver", "success");
               term.writeLine("Creating volume \"app_pgdata\" with local driver", "success");
+              term.writeLine("Creating app-frontend ... done", "success");
               term.writeLine("Creating app-db ... done", "success");
               term.writeLine("Creating app-backend ... done", "success");
               

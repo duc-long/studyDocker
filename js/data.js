@@ -1126,7 +1126,7 @@ const DOCKER_COURSE_DATA = [
   {
     level: 5,
     title: "Docker Compose",
-    description: "Cấu hình compose.yaml liên kết đa container: React, Spring Boot, DB",
+    description: "Cấu hình compose.yaml liên kết đa container: React Frontend, Spring Boot Backend, PostgreSQL",
     topics: [
       {
         id: "l5-syntax-detail",
@@ -1134,11 +1134,29 @@ const DOCKER_COURSE_DATA = [
         badge: "Theory",
         difficulty: "Intermediate",
         content: `
-          <h2>Giải nghĩa từng dòng cấu hình Docker Compose</h2>
-          <p>Tệp <code>compose.yaml</code> (hoặc <code>docker-compose.yml</code>) là tập hợp định nghĩa hệ thống. Hãy xem chi tiết một cấu trúc chuẩn:</p>
+          <h2>Giải nghĩa từng dòng cấu hình Docker Compose cho React Frontend + Spring Boot + PostgreSQL</h2>
+          <p>Tệp <code>compose.yaml</code> (hoặc <code>docker-compose.yml</code>) là tập hợp định nghĩa toàn bộ hệ thống. Với một ứng dụng fullstack, Compose thường quản lý đồng thời React frontend, Spring Boot backend và PostgreSQL database.</p>
 
           <pre><code><strong>services:</strong> # 1. Khai báo danh sách các containers trong hệ sinh thái
-  <strong>db:</strong> # Tên Service (được dùng làm DNS hostname nội bộ)
+  <strong>frontend:</strong> # 2. React Frontend, thường chạy ở cổng 3000
+    <strong>build:</strong> ./frontend-react # Build image từ source React
+    <strong>ports:</strong>
+      - "3000:3000"
+    <strong>depends_on:</strong>
+      - backend
+    <strong>environment:</strong>
+      REACT_APP_API_URL: http://backend:8080
+
+  <strong>backend:</strong> # 3. Spring Boot Backend, thường chạy ở cổng 8080
+    <strong>build:</strong> ./backend-springboot
+    <strong>ports:</strong>
+      - "8080:8080"
+    <strong>depends_on:</strong>
+      - db
+    <strong>environment:</strong>
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/app_db
+
+  <strong>db:</strong> # 4. PostgreSQL Database, được dùng làm DNS hostname nội bộ
     <strong>image:</strong> postgres:15-alpine # Tải trực tiếp image từ Docker Hub
     <strong>environment:</strong> # 2. Thiết lập các biến môi trường cấu hình DB
       POSTGRES_USER: dev_user
@@ -1149,16 +1167,7 @@ const DOCKER_COURSE_DATA = [
     <strong>volumes:</strong> # 4. Gắn kết ổ đĩa để lưu trữ dữ liệu vĩnh viễn ra host
       - pg-data:/var/lib/postgresql/data
 
-  <strong>backend:</strong>
-    <strong>build:</strong> ./backend-springboot # 5. Tự động build Dockerfile trong thư mục con này
-    <strong>ports:</strong>
-      - "8080:8080"
-    <strong>depends_on:</strong> # 6. Chỉ thị khởi chạy: container db phải chạy TRƯỚC backend
-      - db
-    <strong>environment:</strong>
-      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/app_db
-
-<strong>volumes:</strong> # 7. Khai báo các Volume dùng chung
+<strong>volumes:</strong> # 5. Khai báo các Volume dùng chung
   pg-data:</code></pre>
         `,
         quiz: [
@@ -1176,34 +1185,31 @@ const DOCKER_COURSE_DATA = [
         badge: "Practice",
         difficulty: "Advanced",
         content: `
-          <h2>Tách biệt Database và ứng dụng Fullstack</h2>
-          <p>Hãy chuyển qua tab VSCode IDE và hoàn thiện tệp compose.yaml để khai báo liên kết giữa ứng dụng backend Spring Boot và cơ sở dữ liệu PostgreSQL.</p>
+          <h2>Liên kết trọn bộ ứng dụng Fullstack</h2>
+          <p>Hãy chuyển qua tab VSCode IDE và hoàn thiện tệp <code>compose.yaml</code> để khai báo liên kết giữa React frontend, Spring Boot backend và cơ sở dữ liệu PostgreSQL.</p>
         `,
         practice: {
           type: "editor",
-          instructions: "Hoàn thiện tệp compose.yaml khai báo 2 service: 'db' và 'backend' kết nối với nhau ở tab VSCode IDE.",
+          instructions: "Hoàn thiện tệp compose.yaml khai báo 3 service: 'frontend', 'backend' và 'db' kết nối với nhau ở tab VSCode IDE.",
           editorFiles: [
             {
               name: "compose.yaml",
-              content: "# 📝 THỰC HÀNH: Khởi tạo file compose.yaml kết nối đa container\n# Hãy tự tay viết các dòng lệnh Docker Compose chuẩn dưới đây:\n# 1. Khai báo danh mục ngoài cùng: services:\n# 2. Khai báo service 'db' sử dụng image postgres:15-alpine\n#    - Thiết lập environment: POSTGRES_USER=user, POSTGRES_PASSWORD=password, POSTGRES_DB=appdb\n#    - Ánh xạ cổng (ports): 5432:5432\n#    - Khai báo volume: pgdata:/var/lib/postgresql/data\n# 3. Khai báo service 'backend' tự động build thư mục hiện tại (build: .)\n#    - Ánh xạ cổng (ports): 8080:8080\n#    - Định nghĩa depends_on: db (chờ db khởi động trước)\n#    - Thiết lập environment: SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/appdb\n# 4. Khai báo root volume dùng chung ở cuối cùng: volumes: pgdata:\n\n"
-            },
-            {
-              name: "Dockerfile",
-              content: "FROM eclipse-temurin:21-jre-alpine\nWORKDIR /app\nCOPY app.jar .\nCMD [\"java\", \"-jar\", \"app.jar\"]"
+              content: "# 📝 THỰC HÀNH: Khởi tạo file compose.yaml kết nối React + Spring Boot + PostgreSQL\n# Hãy tự tay viết các dòng lệnh Docker Compose chuẩn dưới đây:\n# 1. Khai báo danh mục ngoài cùng: services:\n# 2. Khai báo service 'frontend' cho ứng dụng React\n#    - build: ./frontend-react\n#    - ports: 3000:3000\n#    - depends_on: backend\n#    - environment: REACT_APP_API_URL=http://backend:8080\n# 3. Khai báo service 'backend' cho Spring Boot\n#    - build: ./backend-springboot\n#    - ports: 8080:8080\n#    - depends_on: db\n#    - environment: SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/appdb\n# 4. Khai báo service 'db' sử dụng image postgres:15-alpine\n#    - Thiết lập environment: POSTGRES_USER=user, POSTGRES_PASSWORD=password, POSTGRES_DB=appdb\n#    - Ánh xạ cổng (ports): 5432:5432\n#    - Khai báo volume: pgdata:/var/lib/postgresql/data\n# 5. Khai báo root volume dùng chung ở cuối cùng: volumes: pgdata:\n\n"
             }
           ],
           expectedState: {
             file: "compose.yaml",
-            contains: ["services:", "db:", "image: postgres:15-alpine", "environment:", "POSTGRES_USER", "POSTGRES_PASSWORD", "POSTGRES_DB", "ports:", "5432:5432", "volumes:", "pgdata:/var/lib/postgresql/data", "backend:", "build:", "8080:8080", "depends_on:", "db", "volumes:", "pgdata:"]
+            contains: ["services:", "frontend:", "build: ./frontend-react", "3000:3000", "depends_on:", "backend", "REACT_APP_API_URL", "backend:", "build: ./backend-springboot", "8080:8080", "db:", "image: postgres:15-alpine", "environment:", "POSTGRES_USER", "POSTGRES_PASSWORD", "POSTGRES_DB", "5432:5432", "pgdata:/var/lib/postgresql/data", "volumes:", "pgdata:"]
           },
           hints: [
-            "YAML thụt lề cực kỳ quan trọng! Sử dụng 2 dấu cách cho mỗi cấp độ thụt lề thụ động.",
+            "YAML thụt lề cực kỳ quan trọng! Sử dụng 2 dấu cách cho mỗi cấp độ thụt lề.",
             "Khai báo `services:` đầu tiên ở lề sát trái.",
+            "Ở service `frontend`, chỉ ra đúng thư mục React và cổng 3000.",
+            "Ở service `backend`, chỉ ra đúng thư mục Spring Boot và cổng 8080.",
             "Ở service `db`, đảm bảo truyền đúng mật khẩu `POSTGRES_PASSWORD: password`.",
-            "Ở service `backend`, sử dụng chỉ thị `build: .` để tìm Dockerfile.",
             "Khai báo root volume `volumes: pgdata:` ở hàng cuối cùng không có dấu thụt lề."
           ],
-          solutions: "services:\n  db:\n    image: postgres:15-alpine\n    environment:\n      POSTGRES_USER: user\n      POSTGRES_PASSWORD: password\n      POSTGRES_DB: appdb\n    ports:\n      - \"5432:5432\"\n    volumes:\n      - pgdata:/var/lib/postgresql/data\n  backend:\n    build: .\n    ports:\n      - \"8080:8080\"\n    depends_on:\n      - db\n    environment:\n      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/appdb\n\nvolumes:\n  pgdata:"
+          solutions: "services:\n  frontend:\n    build: ./frontend-react\n    ports:\n      - \"3000:3000\"\n    depends_on:\n      - backend\n    environment:\n      REACT_APP_API_URL: http://backend:8080\n  backend:\n    build: ./backend-springboot\n    ports:\n      - \"8080:8080\"\n    depends_on:\n      - db\n    environment:\n      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/appdb\n      SPRING_DATASOURCE_USERNAME: user\n      SPRING_DATASOURCE_PASSWORD: password\n  db:\n    image: postgres:15-alpine\n    environment:\n      POSTGRES_USER: user\n      POSTGRES_PASSWORD: password\n      POSTGRES_DB: appdb\n    ports:\n      - \"5432:5432\"\n    volumes:\n      - pgdata:/var/lib/postgresql/data\n\nvolumes:\n  pgdata:"
         },
         quiz: [
           {
