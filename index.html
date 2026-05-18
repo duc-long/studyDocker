@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Docker Master - Interactive Learning Platform</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/layout.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/custom.css">
+    <link rel="icon" href="box.png">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <i data-lucide="box" class="logo-icon"></i>
+                <h2>DockerMaster</h2>
+            </div>
+            
+            <div class="progress-container">
+                <div class="progress-info">
+                    <span>Course Progress</span>
+                    <span id="progress-text">0%</span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progress-fill" style="width: 0%"></div>
+                </div>
+            </div>
+
+            <nav class="roadmap-nav" id="roadmap-nav">
+                <!-- Roadmap items will be injected here via JS -->
+            </nav>
+            
+            <div class="sidebar-footer">
+                <div class="user-stats">
+                    <div class="stat" title="Points"><i data-lucide="award"></i> <span id="user-points">0</span></div>
+                    <div class="stat" title="Streak"><i data-lucide="flame"></i> <span id="user-streak">1</span></div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Workspace -->
+        <main class="workspace">
+            <!-- Top Navbar -->
+            <header class="topbar">
+                <div class="breadcrumbs" id="breadcrumbs">
+                    Level 1 <i data-lucide="chevron-right"></i> Docker Foundation
+                </div>
+                <div class="topbar-actions">
+                    <button class="btn-icon" id="theme-toggle" title="Toggle Theme">
+                        <i data-lucide="sun"></i>
+                    </button>
+                    <button class="btn-icon" title="Settings">
+                        <i data-lucide="settings"></i>
+                    </button>
+                    <div class="avatar">
+                        <img src="https://ui-avatars.com/api/?name=User&background=0D8ABC&color=fff" alt="User">
+                    </div>
+                </div>
+            </header>
+
+            <!-- Split Content Area -->
+            <div class="content-split">
+                <!-- Left Content: Lesson Material -->
+                <section class="lesson-panel" id="lesson-panel">
+                    <div class="lesson-header">
+                        <h1 id="lesson-title">Welcome to Docker Master</h1>
+                        <div class="lesson-badges" id="lesson-badges">
+                            <span class="badge badge-beginner">Beginner</span>
+                            <span class="badge badge-theory">Theory</span>
+                        </div>
+                    </div>
+                    
+                    <div class="lesson-body" id="lesson-content">
+                        <!-- Content injected via JS -->
+                        <div class="placeholder-content">
+                            <i data-lucide="book-open"></i>
+                            <p>Select a topic from the sidebar to begin.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="lesson-footer">
+                        <button class="btn btn-secondary" id="btn-prev" disabled>
+                            <i data-lucide="arrow-left"></i> Previous
+                        </button>
+                        <button class="btn btn-primary" id="btn-next">
+                            Next <i data-lucide="arrow-right"></i>
+                        </button>
+                    </div>
+                </section>
+
+                <!-- Right Content: Interactive (Editor/Terminal/Quiz/Desktop/Pipeline) -->
+                <section class="interactive-panel resizable">
+                    <div class="panel-tabs">
+                        <button class="tab active" data-target="terminal-view"><i data-lucide="terminal"></i> Terminal</button>
+                        <button class="tab" data-target="editor-view"><i data-lucide="code"></i> VSCode IDE</button>
+                        <button class="tab" data-target="desktop-view"><i data-lucide="layout"></i> Docker Desktop</button>
+                        <button class="tab" data-target="pipeline-view"><i data-lucide="git-branch"></i> CI/CD Pipeline</button>
+                        <button class="tab" data-target="quiz-view"><i data-lucide="help-circle"></i> Quiz</button>
+                        <button class="tab" data-target="preview-view"><i data-lucide="monitor"></i> Browser</button>
+                    </div>
+                    
+                    <div class="panel-content">
+                        <!-- Terminal View -->
+                        <div id="terminal-view" class="view-pane active">
+                            <div class="terminal-container">
+                                <div class="terminal-header" style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+                                    <span>bash - docker-vm</span>
+                                    <button class="btn btn-sm btn-secondary" id="btn-clear-terminal" style="padding: 2px 8px; font-size: 0.75rem; border: none; background: rgba(255,255,255,0.1); color: var(--text-color); cursor: pointer; display: flex; align-items: center; gap: 4px; border-radius: 4px;" title="Clear Terminal">
+                                        <i data-lucide="trash-2" style="width: 12px; height: 12px;"></i> Clear
+                                    </button>
+                                </div>
+                                <div class="terminal-body" id="terminal-output">
+                                    <div class="term-line">Welcome to Docker Lab Environment!</div>
+                                    <div class="term-line">Type 'docker version' to check your installation.</div>
+                                </div>
+                                <div class="terminal-input-wrapper">
+                                    <span class="term-prompt">user@docker-lab:~$</span>
+                                    <input type="text" id="terminal-input" class="term-input" autocomplete="off" spellcheck="false" autofocus>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Editor View (VSCode Mockup) -->
+                        <div id="editor-view" class="view-pane">
+                            <div class="ide-container">
+                                <div class="ide-sidebar">
+                                    <div style="padding: 0.5rem 1rem; font-size: 0.75rem; text-transform: uppercase; font-weight: 700; color: var(--text-muted); border-bottom: 1px solid var(--border-color); display: flex; align-items: center; gap: 0.5rem;">
+                                        <i data-lucide="folder"></i> Explorer
+                                    </div>
+                                    <div class="file-tree" id="vscode-file-tree">
+                                        <!-- Files injected via JS -->
+                                    </div>
+                                </div>
+                                <div class="ide-editor-area">
+                                    <div class="editor-header">
+                                        <span id="editor-filename"><i data-lucide="file-code-2"></i> Dockerfile</span>
+                                        <button class="btn btn-sm btn-primary" id="btn-build"><i data-lucide="play"></i> Build Image</button>
+                                    </div>
+                                    <textarea id="code-editor" class="code-editor" spellcheck="false">FROM node:18-alpine
+WORKDIR /app
+COPY package*.json ./
+RUN npm install
+COPY . .
+EXPOSE 3000
+CMD ["node", "app.js"]</textarea>
+                                    <div id="editor-feedback" class="feedback-panel hidden"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Docker Desktop View -->
+                        <div id="desktop-view" class="view-pane">
+                            <div class="desktop-container">
+                                <div class="desktop-sidebar">
+                                    <div class="desktop-nav-item active" data-dest="desktop-containers"><i data-lucide="box"></i> Containers</div>
+                                    <div class="desktop-nav-item" data-dest="desktop-images"><i data-lucide="disc"></i> Images</div>
+                                    <div class="desktop-nav-item" data-dest="desktop-volumes"><i data-lucide="database"></i> Volumes</div>
+                                    <div class="desktop-nav-item" data-dest="desktop-networks"><i data-lucide="share-2"></i> Networks</div>
+                                </div>
+                                <div class="desktop-content">
+                                    <div id="desktop-containers" class="desktop-tab-content active">
+                                        <div class="desktop-header">
+                                            <h3>Containers</h3>
+                                            <span class="desktop-stat-pill" id="desktop-running-count">0 running</span>
+                                        </div>
+                                        <div class="desktop-table-wrapper">
+                                            <table class="desktop-table">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Name</th>
+                                                        <th>Image</th>
+                                                        <th>Status</th>
+                                                        <th>Ports</th>
+                                                        <th>Actions</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="desktop-containers-list">
+                                                    <!-- Container rows injected via JS -->
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                    
+                                    <div id="desktop-images" class="desktop-tab-content">
+                                        <div class="desktop-header">
+                                            <h3>Images</h3>
+                                        </div>
+                                        <div class="desktop-table-wrapper">
+                                            <table class="desktop-table">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Repository : Tag</th>
+                                                        <th>Image ID</th>
+                                                        <th>Created</th>
+                                                        <th>Size</th>
+                                                        <th>Actions</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="desktop-images-list">
+                                                    <!-- Image rows injected via JS -->
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                    
+                                    <div id="desktop-volumes" class="desktop-tab-content">
+                                        <div class="desktop-header">
+                                            <h3>Volumes</h3>
+                                        </div>
+                                        <div class="desktop-table-wrapper">
+                                            <table class="desktop-table">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Name</th>
+                                                        <th>Driver</th>
+                                                        <th>Size</th>
+                                                        <th>Actions</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="desktop-volumes-list">
+                                                    <!-- Volume rows injected via JS -->
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                    
+                                    <div id="desktop-networks" class="desktop-tab-content">
+                                        <div class="desktop-header">
+                                            <h3>Networks</h3>
+                                        </div>
+                                        <div class="desktop-table-wrapper">
+                                            <table class="desktop-table">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Name</th>
+                                                        <th>Driver</th>
+                                                        <th>Scope</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="desktop-networks-list">
+                                                    <!-- Network rows injected via JS -->
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- CI/CD Pipeline View -->
+                        <div id="pipeline-view" class="view-pane">
+                            <div class="pipeline-container">
+                                <!-- Grading Panel -->
+                                <div id="pipeline-grading" class="pipeline-grading hidden">
+                                    <div class="grading-score-circle">
+                                        <span id="grading-score-text">0</span>
+                                        <span class="score-label">Points</span>
+                                    </div>
+                                    <div class="grading-info">
+                                        <h3 id="grading-status-title">Pipeline Finished</h3>
+                                        <p id="grading-status-desc">Automated tests passed. Deployed successfully.</p>
+                                        <div class="grading-feedback-list" id="grading-feedback-list">
+                                            <!-- Feedback suggestions injected via JS -->
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Pipeline Steps Visualization -->
+                                <div class="pipeline-flow-wrapper">
+                                    <div class="pipeline-title">GitHub Actions: deploy.yml</div>
+                                    <div class="pipeline-graph" id="pipeline-graph">
+                                        <div class="pipeline-node" id="node-trigger">
+                                            <div class="node-icon"><i data-lucide="git-commit"></i></div>
+                                            <div class="node-label">Git Push</div>
+                                            <div class="node-status"></div>
+                                        </div>
+                                        <div class="pipeline-connector" id="conn-1"></div>
+                                        
+                                        <div class="pipeline-node" id="node-test">
+                                            <div class="node-icon"><i data-lucide="play"></i></div>
+                                            <div class="node-label">Unit Test</div>
+                                            <div class="node-status"></div>
+                                        </div>
+                                        <div class="pipeline-connector" id="conn-2"></div>
+                                        
+                                        <div class="pipeline-node" id="node-build">
+                                            <div class="node-icon"><i data-lucide="package"></i></div>
+                                            <div class="node-label">Docker Build</div>
+                                            <div class="node-status"></div>
+                                        </div>
+                                        <div class="pipeline-connector" id="conn-3"></div>
+                                        
+                                        <div class="pipeline-node" id="node-push">
+                                            <div class="node-icon"><i data-lucide="upload-cloud"></i></div>
+                                            <div class="node-label">Push Hub</div>
+                                            <div class="node-status"></div>
+                                        </div>
+                                        <div class="pipeline-connector" id="conn-4"></div>
+                                        
+                                        <div class="pipeline-node" id="node-deploy">
+                                            <div class="node-icon"><i data-lucide="server"></i></div>
+                                            <div class="node-label">VPS Deploy</div>
+                                            <div class="node-status"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Live Build Logs Terminal -->
+                                <div class="pipeline-logs-wrapper">
+                                    <div class="pipeline-logs-header">
+                                        <span>Console Output - Run #42</span>
+                                        <span class="badge" id="pipeline-timer">00:00</span>
+                                    </div>
+                                    <div class="pipeline-logs-body" id="pipeline-logs-output">
+                                        <div class="log-line">Waiting for Git commit trigger...</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Quiz View -->
+                        <div id="quiz-view" class="view-pane">
+                            <div class="quiz-container" id="quiz-container">
+                                <!-- Quiz injected via JS -->
+                            </div>
+                        </div>
+
+                        <!-- Preview View (Browser Mockup) -->
+                        <div id="preview-view" class="view-pane">
+                            <div class="browser-mockup">
+                                <div class="browser-header">
+                                    <span class="dot red"></span>
+                                    <span class="dot yellow"></span>
+                                    <span class="dot green"></span>
+                                    <div class="browser-url">http://localhost:8080</div>
+                                </div>
+                                <div class="browser-body" id="browser-preview">
+                                    <div class="empty-state">
+                                        <i data-lucide="globe"></i>
+                                        <p>No container running on port 8080</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modals & Overlays -->
+    <div id="achievement-modal" class="modal hidden">
+        <div class="modal-content">
+            <div class="achievement-icon"><i data-lucide="star"></i></div>
+            <div class="achievement-text-wrapper">
+                <h2>Achievement Unlocked!</h2>
+                <p id="achievement-text">First Container Run</p>
+            </div>
+            <button class="btn btn-primary" onclick="closeModal('achievement-modal')">Awesome!</button>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/data.js"></script>
+    <script src="js/components/terminal.js"></script>
+    <script src="js/components/editor.js"></script>
+    <script src="js/components/quiz.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,98 @@
+:root {
+    /* Light Theme (default fallback) */
+    --bg-primary: #f8f9fa;
+    --bg-secondary: #ffffff;
+    --bg-tertiary: #e9ecef;
+    --border-color: #dee2e6;
+    
+    --text-primary: #212529;
+    --text-secondary: #495057;
+    --text-muted: #6c757d;
+    
+    --accent-blue: #0d6efd;
+    --accent-blue-hover: #0b5ed7;
+    --accent-green: #198754;
+    --accent-purple: #6f42c1;
+    --accent-orange: #fd7e14;
+    --accent-red: #dc3545;
+    
+    --sidebar-width: 280px;
+    --header-height: 56px;
+    
+    --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+    --font-mono: 'Fira Code', ui-monospace, monospace;
+}
+
+/* Dark Theme (applied by default via .dark class on html) */
+html.dark {
+    --bg-primary: #0f111a; /* Very dark blue-grey, similar to VSCode default or Docker */
+    --bg-secondary: #1a1d27;
+    --bg-tertiary: #232736;
+    --border-color: #2e3245;
+    
+    --text-primary: #e2e8f0;
+    --text-secondary: #94a3b8;
+    --text-muted: #64748b;
+    
+    --accent-blue: #3b82f6;
+    --accent-blue-hover: #2563eb;
+    --accent-green: #10b981;
+    --accent-purple: #8b5cf6;
+    --accent-orange: #f59e0b;
+    --accent-red: #ef4444;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: var(--font-sans);
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    line-height: 1.6;
+    overflow: hidden; /* App-like feel, scroll inside panels */
+    font-size: 14px;
+}
+
+/* Typography */
+h1, h2, h3, h4, h5, h6 {
+    font-weight: 600;
+    color: var(--text-primary);
+    line-height: 1.2;
+}
+
+p {
+    margin-bottom: 1rem;
+    color: var(--text-secondary);
+}
+
+a {
+    color: var(--accent-blue);
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* Utility Classes */
+.hidden { display: none !important; }
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+::-webkit-scrollbar-thumb {
+    background: var(--bg-tertiary);
+    border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: var(--text-muted);
+}
